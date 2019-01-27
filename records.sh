@@ -1,37 +1,43 @@
 #!/bin/sh
 # This is a comment!
 
-Students=('kelly-keating' 'engie15' 'josephquested' 'oliver-harcourt')
+Remote="https://github.com/dev-academy-programme/foundations-records.git"
+Repos=("foundations" "minesweeper" "calculator" "$name.github.io")
+
+Students=('oliver-harcourt' 'kelly-keating' 'engie15' 'josephquested')
 
 name=$1
+out="$(pwd)/records-output.txt"
 
 function get_records {
-    echo "Copying foundations records file...\n"
-    git clone https://github.com/dev-academy-programme/foundations-records.git records-of-students-work
+    echo "Copying foundations records file...\n" 
+    echo "Foundations work recorded - $(date '+%a %d %b %Y')" > $out
+    here=$(pwd records-output.txt)
+    git clone $Remote records-of-students-work
 
     cd records-of-students-work
-    git pull origin master
 
     for name in "${Students[@]}"; do
         echo "\n\n"
         ( mkdir $name ) || ( echo "Student already exists. Copying to existing folder" )
         
-        echo "\n------ $name ------"
+        echo "\n------ $name ------" && log "\n------ $name ------"
         cd $name 
-        copy_repo "foundations"
-        copy_repo "$name.github.io"
-        copy_repo "calculator"
-        copy_repo "minesweeper"
+
+
+        for repo in "${Repos[@]}"; do
+            copy_repo $repo
+        done
         cd ..
     done
 
-    echo "\nFinished all students\n"
+    echo "\n\n\nFinished all students\n"
     git add -A
     git commit -qm "$(date '+%a %d %b %Y')"
     echo "--> Commited: $(date '+%a %d %b %Y')\n\n"
 
     git push origin master
-    echo "\n\nPushed to repo"
+    echo "\nEverything pushed to repo\nRemoving repo folder..."
 
     cd ..
     rm -rf records-of-students-work
@@ -63,26 +69,33 @@ function copy_repo {
         for branch in $allBranches; do
             copy_branch ${branch#*origin/}
         done
-        
+ 
+        log "$repo  -  Done"
         rm -rf original-$repo
 
-    ) || ( echo "Moving on....." )
+    ) || ( echo "Moving on....." && log "$repo  -  No such repo https://github.com/$name/$repo.git")
 }
 
 function copy_branch {
     branch=$1
     echo "\nCopying branch $branch"
+    # log "    -  $branch"
 
     cd original-$repo
     git checkout $branch
     cd ..
 
-    if [ -d "$repo/$branch" ]; then
-        rm -rf $repo/$branch
-    fi
+    # if [ -d "$repo/$branch" ]; then
+    #     rm -rf $repo/$branch
+    # fi
     
-    cp -r original-$repo $repo/$branch
-    rm -rf $repo/$branch/.git
+    # cp -r original-$repo $repo/$branch
+    # rm -rf $repo/$branch/.git
 }
+
+function log {
+    echo $1 >> $out
+}
+
 
 get_records
