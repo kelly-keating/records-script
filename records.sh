@@ -12,9 +12,8 @@ out="$(pwd)/records-output.txt"
 function get_records {
     echo "Copying foundations records file...\n" 
     echo "Foundations work recorded - $(date '+%a %d %b %Y')" > $out
-    here=$(pwd records-output.txt)
-    git clone $Remote records-of-students-work
 
+    git clone $Remote records-of-students-work
     cd records-of-students-work
 
     for name in "${Students[@]}"; do
