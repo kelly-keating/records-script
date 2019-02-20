@@ -2,9 +2,9 @@
 # This is a comment!
 
 Remote="https://github.com/dev-academy-programme/foundations-records.git"
-Repos=("foundations" "minesweeper" "calculator" "$name.github.io")
 
 Students=('oliver-harcourt' 'kelly-keating' 'engie15' 'josephquested')
+
 
 name=$1
 out="$(pwd)/records-output.txt"
@@ -23,6 +23,7 @@ function get_records {
         echo "\n------ $name ------" && log "\n------ $name ------"
         cd $name 
 
+        Repos=("foundations" "minesweeper" "calculator" "$name.github.io")
 
         for repo in "${Repos[@]}"; do
             copy_repo $repo
@@ -52,9 +53,9 @@ function copy_repo {
 
         git clone https://github.com/$name/$repo.git original-$repo
 
-        if [ -d "$repo" ]; then
-            rm -rf $repo
-        fi
+        # if [ -d "$repo" ]; then
+        #     rm -rf $repo
+        # fi
 
         mkdir $repo
 
@@ -84,12 +85,12 @@ function copy_branch {
     git checkout $branch
     cd ..
 
-    # if [ -d "$repo/$branch" ]; then
-    #     rm -rf $repo/$branch
-    # fi
+    if [ -d "$repo/$branch" ]; then
+        rm -rf $repo/$branch
+    fi
     
-    # cp -r original-$repo $repo/$branch
-    # rm -rf $repo/$branch/.git
+    cp -r original-$repo $repo/$branch
+    rm -rf $repo/$branch/.git
 }
 
 function log {
