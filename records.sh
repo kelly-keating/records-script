@@ -3,9 +3,9 @@
 
 Remote="https://github.com/eda-foundations-records"
 
-Students=('adam-cowie' 'ashahta' 'eloise-mcintyre' 'marinatateoka' 'jackie-shu' 'jillGlass' 'suzanamelomoraes' '12oman' 'andria-hibe' 'jeyaraniga' 'steve32787' 'Te-Piha' 'samuel-looi' 'peter-robinson-96' 'SunnyNiu' 'diego-pp' 'Roh1782' 'karina-mota')
+Students=('oliver-harcourt' 'kelly-keating' 'emilyparkes' 'josephquested')
 
-cohort='HOROEKA-2019'
+cohort='EDA-2019'
 out="$(pwd)/records-output-$cohort.txt"
 
 function get_records {
