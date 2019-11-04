@@ -1,20 +1,21 @@
 #!/bin/sh
 # This is a comment!
 
-Remote="https://github.com/dev-academy-programme/foundations-records.git"
+Remote="https://github.com/eda-foundations-records"
 
-Students=('oliver-harcourt' 'kelly-keating' 'engie15' 'josephquested')
+Students=('adam-cowie' 'ashahta' 'eloise-mcintyre' 'marinatateoka' 'jackie-shu' 'jillGlass' 'suzanamelomoraes' '12oman' 'andria-hibe' 'jeyaraniga' 'steve32787' 'Te-Piha' 'samuel-looi' 'peter-robinson-96' 'SunnyNiu' 'diego-pp' 'Roh1782' 'karina-mota')
 
-
-name=$1
-out="$(pwd)/records-output.txt"
+cohort='HOROEKA-2019'
+out="$(pwd)/records-output-$cohort.txt"
 
 function get_records {
     echo "Copying foundations records file...\n" 
     echo "Foundations work recorded - $(date '+%a %d %b %Y')" > $out
 
-    git clone $Remote records-of-students-work
-    cd records-of-students-work
+    create_records_repo
+    git clone $Remote/$cohort.git
+
+    cd $cohort
 
     for name in "${Students[@]}"; do
         echo "\n\n"
@@ -23,7 +24,7 @@ function get_records {
         echo "\n------ $name ------" && log "\n------ $name ------"
         cd $name 
 
-        Repos=("foundations" "minesweeper" "calculator" "$name.github.io")
+        Repos=("DOM-interactions" "reflections" "minesweeper" "calculator" "$name.github.io")
 
         for repo in "${Repos[@]}"; do
             copy_repo $repo
@@ -33,15 +34,27 @@ function get_records {
 
     echo "\n\n\nFinished all students\n"
     git add -A
-    git commit -qm "$(date '+%a %d %b %Y')"
-    echo "--> Commited: $(date '+%a %d %b %Y')\n\n"
+    git commit -qm "$cohort - $(date '+%a %d %b %Y')"
+    echo "--> Commited: $(date '+%a %d %b %Y')\n\n" 
 
     git push origin master
     echo "\nEverything pushed to repo\nRemoving repo folder..."
 
     cd ..
-    rm -rf records-of-students-work
+    cp records-output-$cohort.txt $cohort/records-output-$cohort.txt
+    rm -rf $cohort
     echo "\nDone :)"
+}
+
+function create_records_repo {
+    read -p "Github username: " github_user
+    read -sp "Github password: " github_password
+
+    echo "\n\n"
+
+    new_repo_data='{"name":"'"$cohort"'", "private": true}'
+
+    ( curl --user $github_user:$github_password -X POST --data "$new_repo_data" https://api.github.com/orgs/eda-foundations-records/repos > /dev/null ) && ( echo "\nCreated repo $cohort" )
 }
 
 function copy_repo {
