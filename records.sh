@@ -1,9 +1,6 @@
 #!/bin/sh
 # This is a comment!
 
-remote="https://github.com/eda-foundations-records"
-
-out="$(pwd)/records-output-$cohort.txt"
 
 # change these variables :)
 students=("emilyparkes" "josephquested" "kelly-keating" "oliver-harcourt")
@@ -11,6 +8,11 @@ cohort="COHORT-YEAR"
 
 # create your own access token (with repo permissions) - https://github.com/settings/tokens/new
 my_access_token="somerandomstringofchars"
+
+# change these at your own risk ;)
+# (aka pls don't)
+remote="https://github.com/eda-foundations-records"
+out="$(pwd)/records-output-$cohort.txt"
 
 function get_records {
     echo "Copying foundations records file...\n" 
