@@ -6,7 +6,8 @@
 students=("emilyparkes" "josephquested" "kelly-keating" "oliver-harcourt")
 cohort="COHORT-YEAR"
 
-# create your own access token (with repo permissions) - https://github.com/settings/tokens/new
+# create your own access token (with repo permissions)
+# https://github.com/settings/tokens/new?scopes=repo&description=Foundations%20records%20script
 my_access_token="somerandomstringofchars"
 
 # change these at your own risk ;)
